@@ -26,14 +26,19 @@ public final class Constants {
     //Constants for the physical configuration of the hardware.
     //Motors
     public static final int kArmRotateMotorID = 20;
-    public static final int kArmExtensionMotorID = 40; //TODO: This is a placeholder!
     //Sensors
     public static final int kArmRotateEncoderID = 2; //TODO: This is a placeholder!
-    public static final int kRearMagneticLimitID = 0; //TODO: This is a placeholder!
-    public static final int kForwardMagneticLimitID = 1; //TODO: This is a placeholder!
-
+    //Values
     public static final double kMinArmTheta = 0; //TODO: This is a placeholder!
     public static final double kMaxArmTheta = 360; //TODO: This is a placeholder!
+  }
+  //Constants for extending and retracting the arm
+  public static final class ExtensionConstants {
+    public static final int kArmExtensionMotorID = 40; //TODO: This is a placeholder!
+    public static final int kRearMagneticLimitID = 0; //TODO: This is a placeholder!
+    public static final int kForwardMagneticLimitID = 1; //TODO: This is a placeholder!
+    //Values
+    public static final double kArmExtensionSpeed = 0.20;
   }
   //Constants for the intake of the robot
   public static final class IntakeConstants {

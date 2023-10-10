@@ -6,16 +6,19 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeControl extends CommandBase {
   private final IntakeSubsystem IntakeSub;
   private DoubleSupplier intakeSpeed;
+  private DoubleSupplier outputSpeed;
   /** Creates a new IntakeRun. */
-  public IntakeControl(IntakeSubsystem s_IntakeSubsystem, DoubleSupplier speed) {
+  public IntakeControl(IntakeSubsystem s_IntakeSubsystem, DoubleSupplier intakeSpeed, DoubleSupplier outputSpeed) {
     IntakeSub = s_IntakeSubsystem;
-    intakeSpeed = speed;
+    this.intakeSpeed = intakeSpeed;
+    this.outputSpeed = outputSpeed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(s_IntakeSubsystem);
   }
@@ -27,7 +30,14 @@ public class IntakeControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    IntakeSub.setIntake(intakeSpeed.getAsDouble());
+    if (intakeSpeed.getAsDouble() > outputSpeed.getAsDouble()){ //If our intake speed is greater than the output, run at the intake
+      IntakeSub.setIntake(intakeSpeed.getAsDouble());
+      SmartDashboard.putNumber("INTAKE: ", intakeSpeed.getAsDouble());
+    }else{ //If the output speed is greater, run as the output (make value negative so we actually output)
+      IntakeSub.setIntake(-(outputSpeed.getAsDouble()));
+      SmartDashboard.putNumber("INTAKE: ", -(outputSpeed.getAsDouble()));
+    }
+    
   }
 
   // Called once the command ends or is interrupted.

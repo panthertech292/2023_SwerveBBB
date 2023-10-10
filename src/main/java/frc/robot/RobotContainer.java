@@ -4,13 +4,19 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ExtensionConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmControl;
+import frc.robot.commands.ExtensionControl;
+import frc.robot.commands.IntakeControl;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ExtensionSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -23,17 +29,23 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   //Controllers
-  private final CommandXboxController io_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController io_drivercontroller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
   private final CommandXboxController io_opercontroller = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   //Subsystems
   //drive subsystem go here
   private final ArmSubsystem s_ArmSubsystem = new ArmSubsystem();
   private final IntakeSubsystem s_IntakeSubsystem = new IntakeSubsystem();
+  private final ExtensionSubsystem s_ExtensionSubsystem = new ExtensionSubsystem();
+
+  //Commands
+  private final Command z_ExtendArm = new ExtensionControl(s_ExtensionSubsystem, true, ExtensionConstants.kArmExtensionSpeed);
+  private final Command z_RetractArm = new ExtensionControl(s_ExtensionSubsystem, false, ExtensionConstants.kArmExtensionSpeed);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     s_ArmSubsystem.setDefaultCommand(new ArmControl(s_ArmSubsystem, () -> deadZone(io_opercontroller.getRightY(), OperatorConstants.kOperatorControllerDeadZone)));
+    s_IntakeSubsystem.setDefaultCommand(new IntakeControl(s_IntakeSubsystem, () -> io_opercontroller.getRightTriggerAxis(), () -> io_opercontroller.getLeftTriggerAxis()));
     // Configure the trigger bindings
     configureBindings();
   }
@@ -48,6 +60,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    io_drivercontroller.rightBumper().whileTrue(z_ExtendArm);
+    io_drivercontroller.leftBumper().whileTrue(z_RetractArm);
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     //new Trigger(m_exampleSubsystem::exampleCondition)
     //    .onTrue(new ExampleCommand(m_exampleSubsystem));

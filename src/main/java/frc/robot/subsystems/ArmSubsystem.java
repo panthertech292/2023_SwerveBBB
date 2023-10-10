@@ -16,20 +16,17 @@ import frc.robot.Constants.ArmConstants;
 public class ArmSubsystem extends SubsystemBase {
   //Motors
   private final CANSparkMax ArmRotateMotor;
-  private final CANSparkMax ArmExtensionMotor;
   //Sensors
   private final DutyCycleEncoder ArmRotateEncoder;
-  private final DigitalInput rearMagneticLimit;
-  private final DigitalInput forwardMagneticLimit;
+
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
     //Motors
     ArmRotateMotor = initMotor(ArmConstants.kArmRotateMotorID);
-    ArmExtensionMotor = initMotor(ArmConstants.kArmExtensionMotorID);
+    
     //Sensors
     ArmRotateEncoder = new DutyCycleEncoder(ArmConstants.kArmRotateEncoderID);
-    rearMagneticLimit = new DigitalInput(ArmConstants.kRearMagneticLimitID);
-    forwardMagneticLimit = new DigitalInput(ArmConstants.kForwardMagneticLimitID);
+    
   }
 
   private CANSparkMax initMotor(int canID){
@@ -59,20 +56,10 @@ public class ArmSubsystem extends SubsystemBase {
     }
     ArmRotateMotor.set(safeSpeed);
   }*/
-  public void setArmExtensionMotor(double speed){
-    ArmExtensionMotor.set(speed);
-  }
+  
   public double getArmRotatePosition(){
     return ArmRotateEncoder.getAbsolutePosition();
   }
-  //TODO: Check if these need inverted. Probably will need it.
-  public boolean getRearLimit(){
-    return rearMagneticLimit.get();
-  }
-  public boolean getForwardLimit(){
-    return forwardMagneticLimit.get();
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
