@@ -5,6 +5,12 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ArmControl;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -18,12 +24,18 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  //TODO: Implement a deadband
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  //Controllers TODO: Implement a deadband
+  private final CommandXboxController io_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController io_opercontroller = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+
+  //Subsystems
+  //drive subsystem go here
+  private final ArmSubsystem s_ArmSubsystem = new ArmSubsystem();
+  private final IntakeSubsystem s_IntakeSubsystem = new IntakeSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    s_ArmSubsystem.setDefaultCommand(new ArmControl(s_ArmSubsystem, () -> deadZone(io_opercontroller.getRightY(), OperatorConstants.kOperatorControllerPort))); //TODO: I'm not sure this even works. We need to check this!
     // Configure the trigger bindings
     configureBindings();
   }
@@ -46,12 +58,16 @@ public class RobotContainer {
     // cancelling on release.
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
+  public static double deadZone(double rawInput, double deadband){
+    if (rawInput > deadband){
+      return rawInput;
+    }
+    if (rawInput < -deadband){
+      return rawInput;
+    }
+    return 0; //We are within the deadband. Return 0.
+  }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return null; //no auto right now
