@@ -28,7 +28,7 @@ public final class Constants {
     public static final int kArmRotateMotorID = 20;
     public static final int kArmExtensionMotorID = 40; //TODO: This is a placeholder!
     //Sensors
-    public static final int kArmRotateEncoderID = 41; //TODO: This is a placeholder!
+    public static final int kArmRotateEncoderID = 2; //TODO: This is a placeholder!
     public static final int kRearMagneticLimitID = 0; //TODO: This is a placeholder!
     public static final int kForwardMagneticLimitID = 1; //TODO: This is a placeholder!
 
