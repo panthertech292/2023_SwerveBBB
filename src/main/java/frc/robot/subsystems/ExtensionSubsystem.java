@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ExtensionConstants;
 
@@ -34,16 +35,28 @@ public class ExtensionSubsystem extends SubsystemBase {
   public void setArmExtensionMotor(double speed){
     ArmExtensionMotor.set(speed);
   }
-  //TODO: Check if these need inverted. Probably will need it.
+  public void safeSetArmExtensionMotor(double speed){
+    double safeSpeed = speed;
+    //If we are at the the rear limit and trying to run backwards
+    if(getRearLimit() && speed < 0){
+      safeSpeed = 0;
+    }
+    if(getForwardLimit() && speed > 0){
+      safeSpeed = 0;
+    }
+    ArmExtensionMotor.set(safeSpeed);
+  }
   public boolean getRearLimit(){
-    return rearMagneticLimit.get();
+    return !rearMagneticLimit.get();
   }
   public boolean getForwardLimit(){
-    return forwardMagneticLimit.get();
+    return !forwardMagneticLimit.get();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Forward Mag Limit", getForwardLimit());
+    SmartDashboard.putBoolean("Rear Mag Limit", getRearLimit());
   }
 }

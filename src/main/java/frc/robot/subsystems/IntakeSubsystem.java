@@ -25,10 +25,12 @@ public class IntakeSubsystem extends SubsystemBase {
     CANSparkMax newMotor = new CANSparkMax(canID, MotorType.kBrushless);
     newMotor.restoreFactoryDefaults();
     newMotor.setIdleMode(IdleMode.kBrake);
+    newMotor.enableVoltageCompensation(12);
+    newMotor.setSmartCurrentLimit(1, 20, 60); //Not sure about this. Also make constants?
     newMotor.burnFlash();
     return newMotor;
   }
-  public void setIntake(double speed){ //TODO: We might have to invert one of these
+  public void setIntake(double speed){
     IntakeMotorUp.set(speed);
     IntakeMotorDown.set(speed);
   }
@@ -36,5 +38,6 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    //SmartDashboard.putNumber("POWAHH (AMPS)", IntakeMotorUp.getOutputCurrent());
   }
 }

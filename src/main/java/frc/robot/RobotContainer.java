@@ -12,6 +12,7 @@ import frc.robot.commands.IntakeControl;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExtensionSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -36,13 +37,15 @@ public class RobotContainer {
   private final ExtensionSubsystem s_ExtensionSubsystem = new ExtensionSubsystem();
 
   //Commands
-  private final Command z_ExtendArm = new ExtensionControl(s_ExtensionSubsystem, true, ExtensionConstants.kArmExtensionSpeed);
-  private final Command z_RetractArm = new ExtensionControl(s_ExtensionSubsystem, false, ExtensionConstants.kArmExtensionSpeed);
+  private final Command z_ExtendArm = new ExtensionControl(s_ExtensionSubsystem, ExtensionConstants.kArmExtensionSpeed);
+  private final Command z_RetractArm = new ExtensionControl(s_ExtensionSubsystem, -ExtensionConstants.kArmExtensionSpeed);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+  
     s_ArmSubsystem.setDefaultCommand(new ArmControl(s_ArmSubsystem, () -> deadZone(io_opercontroller.getRightY(), OperatorConstants.kOperatorControllerDeadZone)));
     s_IntakeSubsystem.setDefaultCommand(new IntakeControl(s_IntakeSubsystem, () -> io_opercontroller.getRightTriggerAxis(), () -> io_opercontroller.getLeftTriggerAxis()));
+    CameraServer.startAutomaticCapture();
     // Configure the trigger bindings
     configureBindings();
   }
@@ -57,8 +60,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    io_drivercontroller.rightBumper().whileTrue(z_ExtendArm);
-    io_drivercontroller.leftBumper().whileTrue(z_RetractArm);
+    io_opercontroller.rightBumper().whileTrue(z_ExtendArm);
+    io_opercontroller.leftBumper().whileTrue(z_RetractArm);
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     //new Trigger(m_exampleSubsystem::exampleCondition)
     //    .onTrue(new ExampleCommand(m_exampleSubsystem));

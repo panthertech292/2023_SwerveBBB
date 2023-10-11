@@ -9,12 +9,10 @@ import frc.robot.subsystems.ExtensionSubsystem;
 
 public class ExtensionControl extends CommandBase {
   private final ExtensionSubsystem ExtensionSub;
-  private Boolean extend;
   private double speed;
   /** Creates a new ExtensionControl. */
-  public ExtensionControl(ExtensionSubsystem s_ExtensionSubsystem, Boolean extendArm, double speed) {
+  public ExtensionControl(ExtensionSubsystem s_ExtensionSubsystem, double speed) {
     ExtensionSub = s_ExtensionSubsystem;
-    this.extend = extendArm;
     this.speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(s_ExtensionSubsystem);
@@ -23,18 +21,14 @@ public class ExtensionControl extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //TODO: Add limits to this
-    if(extend){
-      ExtensionSub.setArmExtensionMotor(speed);
-    }
-    if(!extend){
-      ExtensionSub.setArmExtensionMotor(-speed);
-    }
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    ExtensionSub.safeSetArmExtensionMotor(speed);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
