@@ -9,9 +9,11 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmControl;
 import frc.robot.commands.ExtensionControl;
 import frc.robot.commands.IntakeControl;
+import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExtensionSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.Swerve;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -31,7 +33,7 @@ public class RobotContainer {
   private final CommandXboxController io_opercontroller = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   //Subsystems
-  //drive subsystem go here
+  public final Swerve s_Swerve = new Swerve();
   private final ArmSubsystem s_ArmSubsystem = new ArmSubsystem();
   private final IntakeSubsystem s_IntakeSubsystem = new IntakeSubsystem();
   private final ExtensionSubsystem s_ExtensionSubsystem = new ExtensionSubsystem();
@@ -40,9 +42,22 @@ public class RobotContainer {
   private final Command z_ExtendArm = new ExtensionControl(s_ExtensionSubsystem, ExtensionConstants.kArmExtensionSpeed);
   private final Command z_RetractArm = new ExtensionControl(s_ExtensionSubsystem, -ExtensionConstants.kArmExtensionSpeed);
 
+  /* Drive Controls */
+  //private final int translationAxis = io_drivercontroller.Axis.kLeftY.value;
+  //private final int strafeAxis = io_drivercontroller.Axis.kLeftX.value;
+  //private final int rotationAxis = io_drivercontroller.Axis.kRightX.value;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-  
+    s_Swerve.setDefaultCommand(
+        new TeleopSwerve(
+          s_Swerve, 
+          () -> -io_drivercontroller.getLeftY(), 
+          () -> -io_drivercontroller.getLeftX(), 
+          () -> -io_drivercontroller.getRightX(), 
+          () -> false
+        )
+      );
     s_ArmSubsystem.setDefaultCommand(new ArmControl(s_ArmSubsystem, () -> deadZone(io_opercontroller.getRightY(), OperatorConstants.kOperatorControllerDeadZone)));
     s_IntakeSubsystem.setDefaultCommand(new IntakeControl(s_IntakeSubsystem, () -> io_opercontroller.getRightTriggerAxis(), () -> io_opercontroller.getLeftTriggerAxis()));
     CameraServer.startAutomaticCapture();
