@@ -70,7 +70,7 @@ public class SwerveSubsystem extends SubsystemBase {
         mod.setDesiredState(desiredStates[mod.moduleID], true);
     }
   }
-  /*   - TODO: Figure out what these are for/needed (probably auto)
+  //   - TODO: Figure out what these are for/needed (probably auto)
   public Pose2d getPose() {
     return swerveOdometry.getPoseMeters();
   }
@@ -81,7 +81,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose) {
     swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
-  }*/ 
+  }
 
   public SwerveModuleState[] getModuleStates(){
     SwerveModuleState[] states = new SwerveModuleState[4];
