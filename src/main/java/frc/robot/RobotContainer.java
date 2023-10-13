@@ -10,9 +10,11 @@ import frc.robot.commands.ArmControl;
 import frc.robot.commands.ArmControlPosition;
 import frc.robot.commands.ExtensionControl;
 import frc.robot.commands.IntakeControl;
+import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExtensionSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -32,7 +34,7 @@ public class RobotContainer {
   private final CommandXboxController io_opercontroller = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   //Subsystems
-  //drive subsystem go here
+  private final SwerveSubsystem s_Swerve = new SwerveSubsystem();
   private final ArmSubsystem s_ArmSubsystem = new ArmSubsystem();
   private final IntakeSubsystem s_IntakeSubsystem = new IntakeSubsystem();
   private final ExtensionSubsystem s_ExtensionSubsystem = new ExtensionSubsystem();
@@ -49,6 +51,17 @@ public class RobotContainer {
     s_ExtensionSubsystem.setDefaultCommand(new ExtensionControl(s_ExtensionSubsystem, () -> deadZone(-io_opercontroller.getLeftY(), OperatorConstants.kOperatorControllerDeadZone)));
     s_ArmSubsystem.setDefaultCommand(new ArmControl(s_ArmSubsystem, () -> deadZone(io_opercontroller.getRightY(), OperatorConstants.kOperatorControllerDeadZone)));
     s_IntakeSubsystem.setDefaultCommand(new IntakeControl(s_IntakeSubsystem, () -> io_opercontroller.getRightTriggerAxis(), () -> io_opercontroller.getLeftTriggerAxis()));
+    //Drive
+    s_Swerve.setDefaultCommand(
+        new TeleopSwerve(
+          s_Swerve, 
+          () -> deadZone(-io_drivercontroller.getLeftY(), OperatorConstants.kDriveControllerDeadZone), 
+          () -> deadZone(-io_drivercontroller.getLeftX(), OperatorConstants.kDriveControllerDeadZone), 
+          () -> deadZone(-io_drivercontroller.getRightX(), OperatorConstants.kDriveControllerDeadZone), 
+          () -> false //Robot will always be field centric
+        )
+    );
+
     CameraServer.startAutomaticCapture();
     // Configure the trigger bindings
     configureBindings();
@@ -67,14 +80,8 @@ public class RobotContainer {
     io_opercontroller.rightBumper().whileTrue(z_ExtendArm);
     io_opercontroller.leftBumper().whileTrue(z_RetractArm);
     io_opercontroller.a().whileTrue(z_HighScoreSpot);
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    //new Trigger(m_exampleSubsystem::exampleCondition)
-    //    .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
+
   public static double deadZone(double rawInput, double deadband){
     if (rawInput > deadband){
       return rawInput;
