@@ -15,6 +15,9 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import frc.lib.util.CANSparkMaxUtil;
+import frc.lib.util.SwerveModuleConstants;
+import frc.lib.util.CANSparkMaxUtil.Usage;
 import frc.lib.util.SwerveModuleConstants;
 import frc.lib.math.OnboardModuleState;
 import frc.robot.Constants;
@@ -100,11 +103,11 @@ public class SwerveModule {
         canConderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         canConderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
         AngleCANCoder.configAllSettings(canConderConfig);
-        //CANCoderUtil.setCANCoderBusUsage(angleEncoder, CCUsage.kMinimal); TODO: Might want this?
+        //CANCoderUtil.setCANCoderBusUsage(AngleCANCoder, CCUsage.kMinimal); //TODO: Might want this?
     }
     private void configAngleMotor(){
         AngleMotor.restoreFactoryDefaults();
-        //CANSparkMaxUtil.setCANSparkMaxBusUsage(mAngleMotor, Usage.kPositionOnly); TODO: Might want this?
+        CANSparkMaxUtil.setCANSparkMaxBusUsage(AngleMotor, Usage.kPositionOnly); //TODO: Might want this?
         AngleMotor.setSmartCurrentLimit(Constants.SwerveConstants.angleContinuousCurrentLimit);
         AngleMotor.setInverted(Constants.SwerveConstants.angleMotorInvert);
         AngleMotor.setIdleMode(Constants.SwerveConstants.angleNeutralMode);
@@ -123,7 +126,7 @@ public class SwerveModule {
     }
     private void configDriveMotor(){
         DriveMotor.restoreFactoryDefaults();
-        //CANSparkMaxUtil.setCANSparkMaxBusUsage(mDriveMotor, Usage.kAll); TODO: Might want this?
+        CANSparkMaxUtil.setCANSparkMaxBusUsage(DriveMotor, Usage.kAll); //TODO: Might want this?
         DriveMotor.setSmartCurrentLimit(Constants.SwerveConstants.driveContinuousCurrentLimit);
         DriveMotor.setInverted(Constants.SwerveConstants.driveMotorInvert);
         DriveMotor.setIdleMode(Constants.SwerveConstants.driveNeutralMode);

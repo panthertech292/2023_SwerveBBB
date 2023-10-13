@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -123,5 +124,8 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     swerveOdometry.update(getYaw(), getModulePositions()); 
+    for(SwerveModule mod : mSwerveMods){
+      SmartDashboard.putNumber("Angle:" + mod.moduleID, mod.getCanCoder().getDegrees());
+  }
   }
 }
