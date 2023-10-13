@@ -42,7 +42,7 @@ public class RobotContainer {
   private final Command z_ExtendArm = new ExtensionControl(s_ExtensionSubsystem, ExtensionConstants.kArmExtensionSpeed);
   private final Command z_RetractArm = new ExtensionControl(s_ExtensionSubsystem, -ExtensionConstants.kArmExtensionSpeed);
   //Arm Spots
-  private final Command z_testSpot = new ArmControlPosition(s_ArmSubsystem, 0.716, 5);
+  private final Command z_HighScoreSpot = new ArmControlPosition(s_ArmSubsystem, 0.716, 5);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -66,7 +66,7 @@ public class RobotContainer {
   private void configureBindings() {
     io_opercontroller.rightBumper().whileTrue(z_ExtendArm);
     io_opercontroller.leftBumper().whileTrue(z_RetractArm);
-    io_opercontroller.a().whileTrue(z_testSpot);
+    io_opercontroller.a().whileTrue(z_HighScoreSpot);
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     //new Trigger(m_exampleSubsystem::exampleCondition)
     //    .onTrue(new ExampleCommand(m_exampleSubsystem));

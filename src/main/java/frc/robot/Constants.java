@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -45,5 +47,38 @@ public final class Constants {
     //Hardware Constants
     public static final int kIntakeMotorUpID = 40;
     public static final int kIntakeMotorDownID = 41;
+  }
+  public static final class SwerveConstants{
+    //Hardware Setup
+    public static final int kPigeon2ID = 9;
+    //Front Left Module 0
+    public static final class Mod0 {
+      public static final int driveMotorID = 1;
+      public static final int angleMotorID = 2;
+      public static final int canCoderID = 11;
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(277.12);
+    }
+    //Front Right Module 1
+    public static final class Mod1 {
+      public static final int driveMotorID = 6;
+      public static final int angleMotorID = 5;
+      public static final int canCoderID = 12;
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(223.7); //Might be drifting?
+    }
+    //Back Left Module 2
+    public static final class Mod2 {
+      public static final int driveMotorID = 3;
+      public static final int angleMotorID = 4;
+      public static final int canCoderID = 13;
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(180.7);
+    }
+    //Back Right Module 3
+    public static final class Mod3 {
+      public static final int driveMotorID = 8;
+      public static final int angleMotorID = 7;
+      public static final int canCoderID = 14;
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(162.4);
+    }
+    
   }
 }
