@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.ExtensionConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmControl;
+import frc.robot.commands.ArmControlPosition;
 import frc.robot.commands.ExtensionControl;
 import frc.robot.commands.IntakeControl;
 import frc.robot.subsystems.ArmSubsystem;
@@ -37,12 +38,15 @@ public class RobotContainer {
   private final ExtensionSubsystem s_ExtensionSubsystem = new ExtensionSubsystem();
 
   //Commands
+  //Arm
   private final Command z_ExtendArm = new ExtensionControl(s_ExtensionSubsystem, ExtensionConstants.kArmExtensionSpeed);
   private final Command z_RetractArm = new ExtensionControl(s_ExtensionSubsystem, -ExtensionConstants.kArmExtensionSpeed);
+  //Arm Spots
+  private final Command z_testSpot = new ArmControlPosition(s_ArmSubsystem, 0.716, 5);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-  
+    s_ExtensionSubsystem.setDefaultCommand(new ExtensionControl(s_ExtensionSubsystem, () -> deadZone(-io_opercontroller.getLeftY(), OperatorConstants.kOperatorControllerDeadZone)));
     s_ArmSubsystem.setDefaultCommand(new ArmControl(s_ArmSubsystem, () -> deadZone(io_opercontroller.getRightY(), OperatorConstants.kOperatorControllerDeadZone)));
     s_IntakeSubsystem.setDefaultCommand(new IntakeControl(s_IntakeSubsystem, () -> io_opercontroller.getRightTriggerAxis(), () -> io_opercontroller.getLeftTriggerAxis()));
     CameraServer.startAutomaticCapture();
@@ -62,6 +66,7 @@ public class RobotContainer {
   private void configureBindings() {
     io_opercontroller.rightBumper().whileTrue(z_ExtendArm);
     io_opercontroller.leftBumper().whileTrue(z_RetractArm);
+    io_opercontroller.a().whileTrue(z_testSpot);
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     //new Trigger(m_exampleSubsystem::exampleCondition)
     //    .onTrue(new ExampleCommand(m_exampleSubsystem));

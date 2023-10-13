@@ -35,7 +35,7 @@ public final class Constants {
   //Constants for extending and retracting the arm
   public static final class ExtensionConstants {
     public static final int kArmExtensionMotorID = 30;
-    public static final int kRearMagneticLimitID = 0;
+    public static final int kRearMagneticLimitID = 8;
     public static final int kForwardMagneticLimitID = 1;
     //Values
     public static final double kArmExtensionSpeed = 0.20;
