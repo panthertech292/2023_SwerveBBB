@@ -87,6 +87,9 @@ public class SwerveModule {
     public SwerveModuleState getState(){
         return new SwerveModuleState(DriveEncoder.getVelocity(), getAngle()); 
     }
+    public Rotation2d getOffset(){
+        return v_offsetAngle;
+    }
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(DriveEncoder.getPosition(), getAngle());
     }

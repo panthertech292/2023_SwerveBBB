@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+//import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants;
+//import frc.robot.Constants;
 import frc.robot.commands.ArmControlPosition;
 import frc.robot.commands.ExtensionControl;
 import frc.robot.commands.IntakeControl;
@@ -22,11 +22,11 @@ public class eventMap {
     private final ArmSubsystem s_ArmSub;
     private final ExtensionSubsystem s_ExtensionSub;
 
-    public eventMap(SwerveSubsystem s_SwerveSub, IntakeSubsystem s_IntakeSub, ArmSubsystem s_ArmSub, ExtensionSubsystem s_ExtensionSub) {
-        this.s_SwerveSub = s_SwerveSub;
-        this.s_IntakeSub = s_IntakeSub;
-        this.s_ArmSub = s_ArmSub;
-        this.s_ExtensionSub = s_ExtensionSub;
+    public eventMap(SwerveSubsystem _s_SwerveSub, IntakeSubsystem _s_IntakeSub, ArmSubsystem _s_ArmSub, ExtensionSubsystem _s_ExtensionSub) {
+        this.s_SwerveSub = _s_SwerveSub;
+        this.s_IntakeSub = _s_IntakeSub;
+        this.s_ArmSub = _s_ArmSub;
+        this.s_ExtensionSub = _s_ExtensionSub;
         //eventMap.put("balance", new InstantCommand(() -> s_Swerve.autoBalance())); //  was just autoBalance *** balance\ on charge station
         //eventMap.put("autoCorrect", new InstantCommand(() -> s_Swerve.rotateToDegree(180)));
 
