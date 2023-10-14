@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExtensionSubsystem;
@@ -13,13 +14,13 @@ public class ArmAngleExtensionControl extends CommandBase {
   private final ArmSubsystem ArmSub;
   private boolean extended;
   private double target;
-  private double p;
+  private PIDController armPID;
   /** Creates a new ArmAngleExtensionControl. */
   public ArmAngleExtensionControl(ExtensionSubsystem s_ExtensionSubsystem, ArmSubsystem s_ArmSubsystem, double target, double p, boolean extended) {
     ExtensionSub = s_ExtensionSubsystem;
     ArmSub = s_ArmSubsystem;
     this.extended = extended;
-    this.p = p;
+    armPID = new PIDController(p, 0.0008, 0.001);
     this.target = target;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(s_ExtensionSubsystem, s_ArmSubsystem);
@@ -39,6 +40,16 @@ public class ArmAngleExtensionControl extends CommandBase {
     //If we are supposed to be retracted and the rear limit is not true
     if (!extended && !ExtensionSub.getRearLimit()){
       ExtensionSub.safeSetArmExtensionMotor(-0.50);
+    }
+    //If we are supposed to extend and are at the limit
+    if (extended && ExtensionSub.getForwardLimit()){
+      double v_Speed = armPID.calculate(ArmSub.getArmRotatePosition(), target);
+      ArmSub.setArmRotateMotor(v_Speed);
+    }
+    //If we are supposed to retard and are at the limit
+    if (!extended && ExtensionSub.getRearLimit()){
+      double v_Speed = armPID.calculate(ArmSub.getArmRotatePosition(), target);
+      ArmSub.setArmRotateMotor(v_Speed);
     }
   }
 

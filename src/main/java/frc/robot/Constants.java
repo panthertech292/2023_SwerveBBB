@@ -169,4 +169,21 @@ public final class Constants {
     public static final double driveConversionVelocityFactor = driveConversionPositionFactor / 60.0;
     public static final double angleConversionFactor = 360.0 / angleGearRatio;
   }
+
+
+  public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
+    public static final double slowVel = 1.5;
+    public static final double slowAccel = 1.5;
+    //public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+    //public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+
+    //public static final double kPXController = 1;
+    //public static final double kPYController = 1;
+    //public static final double kPThetaController = 1;
+
+    /* Constraint for the motion profilied robot angle controller */
+    //public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
+    //    new TrapezoidProfile.Constraints(
+    //        kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+}
 }

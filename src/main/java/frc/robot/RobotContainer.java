@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.ExtensionConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ArmAngleExtensionControl;
 import frc.robot.commands.ArmControl;
 import frc.robot.commands.ArmControlPosition;
 import frc.robot.commands.ExtensionControl;
@@ -45,6 +46,8 @@ public class RobotContainer {
   private final Command z_RetractArm = new ExtensionControl(s_ExtensionSubsystem, -ExtensionConstants.kArmExtensionSpeed);
   //Arm Spots
   private final Command z_HighScoreSpot = new ArmControlPosition(s_ArmSubsystem, 0.716, 5);
+  //Arm extension and go to spots
+  private final Command z_testExtendSpot = new ArmAngleExtensionControl(s_ExtensionSubsystem, s_ArmSubsystem, 0.716, 5, true);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -80,6 +83,7 @@ public class RobotContainer {
     io_opercontroller.rightBumper().whileTrue(z_ExtendArm);
     io_opercontroller.leftBumper().whileTrue(z_RetractArm);
     io_opercontroller.a().whileTrue(z_HighScoreSpot);
+    io_opercontroller.a().whileTrue(z_testExtendSpot);
   }
 
   public static double deadZone(double rawInput, double deadband){
