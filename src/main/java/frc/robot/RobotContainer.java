@@ -12,11 +12,15 @@ import frc.robot.commands.ArmControlPosition;
 import frc.robot.commands.ExtensionControl;
 import frc.robot.commands.IntakeControl;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.autos.AutoChooser;
+import frc.robot.commands.autos.AutoTrajectories;
+import frc.robot.commands.autos.eventMap;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExtensionSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -39,15 +43,18 @@ public class RobotContainer {
   private final ArmSubsystem s_ArmSubsystem = new ArmSubsystem();
   private final IntakeSubsystem s_IntakeSubsystem = new IntakeSubsystem();
   private final ExtensionSubsystem s_ExtensionSubsystem = new ExtensionSubsystem();
+  private final eventMap map = new eventMap(s_Swerve, s_IntakeSubsystem, s_ArmSubsystem, s_ExtensionSubsystem);
+  private final AutoTrajectories trajectories = new AutoTrajectories();
+  private final AutoChooser chooser = new AutoChooser(trajectories, map.getMap(), s_Swerve);
 
   //Commands
   //Arm
   private final Command z_ExtendArm = new ExtensionControl(s_ExtensionSubsystem, ExtensionConstants.kArmExtensionSpeed);
   private final Command z_RetractArm = new ExtensionControl(s_ExtensionSubsystem, -ExtensionConstants.kArmExtensionSpeed);
   //Arm Spots
-  private final Command z_HighScoreSpot = new ArmControlPosition(s_ArmSubsystem, 0.716, 5);
+  private final Command z_HighScoreSpot = new ArmControlPosition(s_ArmSubsystem, 0.842, 5);
   //Arm extension and go to spots
-  private final Command z_testExtendSpot = new ArmAngleExtensionControl(s_ExtensionSubsystem, s_ArmSubsystem, 0.716, 5, true);
+  private final Command z_testExtendSpot = new ArmAngleExtensionControl(s_ExtensionSubsystem, s_ArmSubsystem, 0.842, 5, true);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -68,6 +75,7 @@ public class RobotContainer {
     CameraServer.startAutomaticCapture();
     // Configure the trigger bindings
     configureBindings();
+    SmartDashboard.putData("Auto Choices", chooser.getAutoChooser());
   }
 
   /**
@@ -83,7 +91,7 @@ public class RobotContainer {
     io_opercontroller.rightBumper().whileTrue(z_ExtendArm);
     io_opercontroller.leftBumper().whileTrue(z_RetractArm);
     io_opercontroller.a().whileTrue(z_HighScoreSpot);
-    io_opercontroller.a().whileTrue(z_testExtendSpot);
+    io_opercontroller.b().whileTrue(z_testExtendSpot);
   }
 
   public static double deadZone(double rawInput, double deadband){
@@ -98,6 +106,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null; //no auto right now
+    s_Swerve.zeroGyro();
+    return chooser.getCommand();
   }
 }

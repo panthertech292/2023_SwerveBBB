@@ -33,25 +33,25 @@ public class eventMap {
         eventMap.put( // scores cube and stows automatically
             "scoreCubeLow", 
             Commands.sequence(
-                new IntakeControl(s_IntakeSub, () -> 0, () -> 1)
+                new IntakeControl(s_IntakeSub, () -> 0, () -> 1).withTimeout(1)
             )
         );
         eventMap.put(
             "scoreCubeMid",
             Commands.sequence(
-                new ArmControlPosition(s_ArmSub, 0.8, 5), //TODO: Get target for this.
+                new ArmControlPosition(s_ArmSub, 0.842, 5).withTimeout(3), //TODO: Get target for this.
                 new WaitCommand(2),
-                new IntakeControl(s_IntakeSub, () -> 0, () -> 1)
+                new IntakeControl(s_IntakeSub, () -> 0, () -> 1).withTimeout(1)
             )
         );
         eventMap.put(
             "scoreCubeHigh",
             Commands.sequence(
-                new ExtensionControl(s_ExtensionSub, 0.30),
-                new WaitCommand(2),
-                new ArmControlPosition(s_ArmSub, 0.8, 5), //TODO: Get target for this.
-                new WaitCommand(2),
-                new IntakeControl(s_IntakeSub, () -> 0, () -> 1)
+                new ExtensionControl(s_ExtensionSub, 0.30).withTimeout(4),
+                new WaitCommand(1),
+                new ArmControlPosition(s_ArmSub, 0.842, 5).withTimeout(4), //TODO: Get target for this.
+                new WaitCommand(1),
+                new IntakeControl(s_IntakeSub, () -> 0, () -> 1).withTimeout(1)
             )
         );
     }

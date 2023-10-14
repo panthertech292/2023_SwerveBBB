@@ -39,8 +39,8 @@ public class AutoChooser {
         
         m_chooser.setDefaultOption("AutoDead", AutonomousMode.autoDead);
         m_chooser.addOption("Score Low, Drive Forward", AutonomousMode.kScoreCubeLow);
-        m_chooser.addOption("Score Mid, Drive Forward", AutonomousMode.kScoreCubeMid);
-        m_chooser.addOption("Score High, Drive Forward", AutonomousMode.kScoreCubeHigh);
+        m_chooser.addOption("Score Mid, Drive Forward(DONT USE)", AutonomousMode.kScoreCubeMid);
+        m_chooser.addOption("Score High, Drive Forward(DONT USE", AutonomousMode.kScoreCubeHigh);
     }
 
     public SendableChooser<AutonomousMode> getAutoChooser() {
